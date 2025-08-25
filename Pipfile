@@ -6,8 +6,9 @@ name = "pypi"
 [packages]
 django = "==4.0.8"
 django-tastypie = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.13"
+python_version = "3.11"

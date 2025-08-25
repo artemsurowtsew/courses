@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %}Online Store{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <img src="https://placehold.co/1200x250/0D6EFD/FFFFFF/png?text=Welcome+to+Our+Store\nDiscover+amazing+products+at+great+prices" 
+                 alt="Welcome to Our Store" 
+                 class="img-fluid"
+                 width="1200" 
+                 height="250">
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="GET" class="d-flex">
+                <input class="form-control me-2" type="search" name="search" placeholder="Search products..." value="{{ search_query }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form method="GET" class="d-flex">
+                <select name="sort" class="form-select me-2" onchange="this.form.submit()">
+                    <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Newest</option>
+                    <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name A-Z</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Categories</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'shop:index' %}" class="text-decoration-none {% if not current_category %}fw-bold{% endif %}">All Products</a></li>
+                        {% for category in categories %}
+                        <li class="mt-2">
+                            <a href="?category={{ category.id }}" class="text-decoration-none {% if current_category == category.id|stringformat:'s' %}fw-bold{% endif %}">
+                                {{ category.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-md-9">
+            {% if featured_products and not search_query and not current_category %}
+            <!-- Featured Products -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3>Featured Products</h3>
+                    <div class="row">
+                        {% for product in featured_products %}
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title">{{ product.title|truncatechars:30 }}</h6>
+                                    <p class="card-text small">{{ product.description|truncatechars:60 }}</p>
+                                    <div class="mt-auto">
+                                        {% if product.is_on_sale %}
+                                        <span class="text-muted text-decoration-line-through">₴{{ product.price }}</span>
+                                        <span class="text-danger fw-bold">₴{{ product.discount_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold">₴{{ product.price }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'shop:product_detail' product.id %}" class="btn btn-primary btn-sm">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- All Products -->
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        {% if search_query %}
+                            Search Results for "{{ search_query }}"
+                        {% elif current_category %}
+                            {% for category in categories %}
+                                {% if category.id|stringformat:'s' == current_category %}
+                                    {{ category.title }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            All Products
+                        {% endif %}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for product in page_obj %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}" style="height: 250px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.title|truncatechars:40 }}</h5>
+                            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        {% if product.is_on_sale %}
+                                        <span class="text-muted text-decoration-line-through">₴{{ product.price }}</span>
+                                        <span class="text-danger fw-bold">₴{{ product.discount_price }}</span>
+                                        {% else %}
+                                        <span class="fw-bold">₴{{ product.price }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">{{ product.category.title }}</small>
+                                </div>
+                                {% if not product.in_stock %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                                {% else %}
+                                <span class="badge bg-success">In Stock ({{ product.stock_quantity }})</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'shop:product_detail' product.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                                {% if product.in_stock %}
+                                <form method="post" action="{% url 'shop:add_to_cart' product.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <h4>No products found</h4>
+                        <p>Try adjusting your search or browse our categories.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Products pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">Previous</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

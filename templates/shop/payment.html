@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Redirecting to LiqPay...</h2>
+    <p>You will be redirected to the LiqPay payment page shortly.</p>
+    {{ form|safe }}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.forms[0].submit();
+    });
+</script>
+{% endblock %}
