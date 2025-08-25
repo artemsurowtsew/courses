@@ -28,7 +28,7 @@ SECRET_KEY =os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get("HOST", '127.0.0.1')]
+ALLOWED_HOSTS = [os.environ.get('HOST', '127.0.0.1','PYTHON_HOST')]
 
 
 # Application definition
@@ -134,6 +134,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # LiqPay settings
 LIQPAY_PUBLIC_KEY = 'sandbox_i21826940401'
-LIQPAY_PRIVATE_KEY = 'sandbox_wrfVrYkMuwgJfSxt0XAQiqaUGYqnaO9yB1EOO9Nd'
+LIQPAY_PRIVATE_KEY =os.environ.get("LIQPAY_KEY")
 
 LOGIN_URL = '/users/login/'
