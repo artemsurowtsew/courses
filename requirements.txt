@@ -8,4 +8,4 @@ pillow==11.3.0
 python-dotenv==1.1.1
 liqpay-python3==1.1
 django-tastypie==0.15.1
-
+gunicorn==23.0.0
