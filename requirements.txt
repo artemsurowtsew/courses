@@ -1,3 +1,4 @@
-[cite_start]Django==5.2.4 [cite: 240]
-[cite_start]liqpay-python==1.0 [cite: 240]
-[cite_start]pillow==11.0.0 [cite: 240]
+Django==5.2.4
+liqpay-python==1.0
+pillow==11.0.0
+
