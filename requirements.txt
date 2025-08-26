@@ -1,4 +1,9 @@
-﻿Django==5.2.4
+Django==5.2.4
+django-ckeditor==6.7.3
+django-filter==25.1
+django-jazzmin==3.0.1
+django-js-asset==3.1.2
+django-unfold==0.63.0
+pillow==11.3.0
+python-dotenv==1.1.1
 liqpay-python==1.0
-python-dotenv
-pillow==11.0.0
