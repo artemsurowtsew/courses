@@ -7,3 +7,4 @@ django-unfold==0.63.0
 pillow==11.3.0
 python-dotenv==1.1.1
 liqpay-python==1.0
+django-tastypie==0.15.1
