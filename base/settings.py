@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['courses-production-e394.up.railway.app', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['https://courses-production-e394.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
