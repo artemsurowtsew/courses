@@ -6,5 +6,6 @@ django-js-asset==3.1.2
 django-unfold==0.63.0
 pillow==11.3.0
 python-dotenv==1.1.1
-liqpay-python==1.0
+liqpay-python3==1.1
 django-tastypie==0.15.1
+
