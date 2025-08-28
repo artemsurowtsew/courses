@@ -28,9 +28,9 @@ SECRET_KEY =os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get('HOST','DEPLOY_HOST')]
+ALLOWED_HOSTS = ['courses-production-e394.up.railway.app', 'localhost', '127.0.0.1']
 
-
+CSRF_TRUSTED_ORIGINS = ['https://courses-production-e394.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
