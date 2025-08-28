@@ -17,6 +17,3 @@ liqpay-python3
 django-tastypie==0.15.1
 gunicorn==23.0.0
 whitenoise==6.6.0
-
-
-
